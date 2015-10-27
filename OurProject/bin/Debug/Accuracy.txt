@@ -1,0 +1,3 @@
+Typing accuracy is defined as the percentage of correct entries out of the total entries typed. To calculate this mathematically, take the number of correct characters typed divided by the total number, multiplied by 100%. So if you typed 90 out of 100 characters correctly you typed with 90% accuracy.
+
+It is interesting to note that all errors, whether corrected or not, should be counted in the accuracy calculation, unlike the net WPM calculation. This is because the calculation is more "live" than typing speed and literally describes the likelihood that the next character will be typed correctly, regardless of whether it will be corrected or not.

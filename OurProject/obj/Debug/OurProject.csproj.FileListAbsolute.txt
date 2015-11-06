@@ -152,3 +152,9 @@ C:\Users\HP\Desktop\140208-140212(8th week sub)\OurProject\obj\Debug\OurProject.
 C:\Users\HP\Desktop\140208-140212(8th week sub)\OurProject\obj\Debug\OurProject.Properties.Resources.resources
 C:\Users\HP\Desktop\140208-140212(8th week sub)\OurProject\obj\Debug\OurProject.csproj.GenerateResource.Cache
 C:\Users\HP\Desktop\140208-140212(8th week sub)\OurProject\obj\Debug\OurProject.Form3.resources
+D:\Academic\2-1\APL\PreSubmission\OurProject\bin\Debug\OurProject.exe.config
+D:\Academic\2-1\APL\PreSubmission\OurProject\obj\Debug\Interop.WMPLib.dll
+D:\Academic\2-1\APL\PreSubmission\OurProject\obj\Debug\AxInterop.WMPLib.dll
+D:\Academic\2-1\APL\PreSubmission\OurProject\obj\Debug\OurProject.csproj.ResolveComReference.cache
+D:\Academic\2-1\APL\PreSubmission\OurProject\obj\Debug\OurProject.exe
+D:\Academic\2-1\APL\PreSubmission\OurProject\obj\Debug\OurProject.pdb

@@ -119,6 +119,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\keyboard.png" />
+    <None Include="Resources\toucht.png" />
+    <None Include="Resources\vetkano4.png" />
+    <None Include="Resources\vetkano3.png" />
+    <None Include="Resources\11692641_1675533732676751_1807330706022684828_n.jpg" />
+    <None Include="Resources\6-4315-1-Funny-Minion-Quotes-Of-The-Day-267.jpg" />
     <None Include="Resources\addtext_com_MTQxMzI4MTA3NTgy.jpg" />
     <None Include="Resources\command.PNG" />
     <None Include="Resources\dwnarrow.JPG" />

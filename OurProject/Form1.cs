@@ -28,7 +28,11 @@ namespace OurProject
         private int Minute = 0;
         private int Seconds = 0;
         private SoundPlayer sp = new SoundPlayer("shoot.wav");
+        private SoundPlayer ab = new SoundPlayer("bomb.wav");
+        private SoundPlayer rm = new SoundPlayer("explosion.wav");
         private Button t;
+        private int emoticon = 1;
+        private String reuseText;
         public Form1()
         {
             InitializeComponent();
@@ -45,6 +49,7 @@ namespace OurProject
         {
             FileStream fs;
             StreamReader fr;
+            reuseText = filename;
             try
             {
                 fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
@@ -141,7 +146,9 @@ namespace OurProject
             if ((int)key == 41) textAndButtonColour(btn0, c, next, key);
 
 
-            
+
+
+
 
             if ((int)key == 123 || (int)key == 91) textAndButtonColour(btnopenbrace, c, next, key);
             if ((int)key == 125 || (int)key == 93) textAndButtonColour(btnclosebrace, c, next, key);
@@ -182,19 +189,17 @@ namespace OurProject
                 //charIncorrect.Text = incorrect.ToString();
             }
             
-            
-          
-
-
             e.Handled = true;
         }
         private void textAndButtonColour(Button con, char[] c, int next, char key)
         {
+           
             try
             {
                 //con.BackColor = Color.Black;
                 //t = con;
                 t.BackColor = Color.WhiteSmoke;
+                
             }
             catch (Exception ex) {
                 //next = -1;
@@ -236,8 +241,28 @@ namespace OurProject
                     richTextBox1.SelectionColor = Color.Red;
                     incorrect++;
                     nextToType(next);
-                    panel2.BackgroundImage = Properties.Resources.grimace;
-                    sp.Play();
+                    //int emoticon = 1;
+                    if (emoticon == 1)
+                    {
+                        panel2.BackgroundImage = Properties.Resources.grimace;
+                        sp.Play();
+                        emoticon++;
+                    }
+                    else if (emoticon == 2)
+                    {
+                        panel2.BackgroundImage = Properties.Resources.vetkano3;
+                        ab.Play();
+                        emoticon++;
+                    }
+                    else if (emoticon == 3)
+                    {
+                        panel2.BackgroundImage = Properties.Resources.vetkano4;
+                        rm.Play();
+                        emoticon = 1;
+                    }
+                    
+                    //panel2.BackgroundImage = Properties.Resources.grimace;
+                    //sp.Play();
                     
                 }
 
@@ -862,8 +887,24 @@ namespace OurProject
         {
 
         }
-        
 
+        private void btnl_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            resetText();
+           richTextBox1.Text = loadText(reuseText);
+        }
+
+        
    
     }
 }

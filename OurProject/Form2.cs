@@ -12,7 +12,7 @@ namespace OurProject
 {
     public partial class Form2 : MetroFramework.Forms.MetroForm
     {
-        String content;
+       // String content;
         String[] st = new String[12];
         char[] ara = { '\t' };
 
@@ -20,7 +20,8 @@ namespace OurProject
         public Form2()
         {
             InitializeComponent();
-            dataGridView1.RowCount = 12;
+            this.ControlBox = false;
+            dataGridView1.RowCount = 20;
             //dataGridView1.Rows[0].Cells[1].Value = "Avijit";
             //dataGridView1.Rows[1].Cells[1].Value = "Avijit";
             loadText("record.txt");
@@ -85,6 +86,11 @@ namespace OurProject
             Form1 f1 = new Form1();
             f1.Show();
             this.Hide();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
     }

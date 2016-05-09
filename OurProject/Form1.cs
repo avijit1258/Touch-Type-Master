@@ -9,12 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
+using System.Data.OleDb;
 
 
 
 namespace OurProject
 {
     public partial class Form1 : MetroFramework.Forms.MetroForm
+
+
     {
         private int next = -1;
         private int correct = 0;
@@ -32,16 +35,28 @@ namespace OurProject
         private SoundPlayer rm = new SoundPlayer("explosion.wav");
         private Button t;
         private int emoticon = 1;
+        private int smilevalue = 1;
         private String reuseText;
+        private OleDbConnection connection = new OleDbConnection();
+        public  string username;
+
+        
+
         public Form1()
         {
             InitializeComponent();
-           
+
+            //Form4 f4 = new Form4();
+            username = Form4.tb;
             
            this.Controls.Add(richTextBox1);
             richTextBox1.KeyPress += new KeyPressEventHandler(richTextBox1_KeyPress);
-            
+            this.FormClosing += new FormClosingEventHandler(Form1_FormClosing);
             //richTextBox1.BringToFront();
+           
+            connection.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source= record.accdb;
+            Persist Security Info=False;";
+            
             
         }
 
@@ -68,7 +83,7 @@ namespace OurProject
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            richTextBox1.Text = loadText("coding.txt");
+            richTextBox1.Text = loadText("Accuracy.txt");
             //this.ActiveControl = richTextBox1;
             //richTextBox1.Focus();
            // richTextBox1.Select();
@@ -178,18 +193,31 @@ namespace OurProject
             {
                 
                 timer1.Stop();
+                insertDb();
                 
-                //richTextBox1.Text = loadText(fileName);
-                //richTextBox1.SelectionStart = 0;
-                //richTextBox1.SelectionLength = next;
-                //richTextBox1.SelectionColor = Color.Black;
-                //richTextBox1.SelectionBackColor = Color.White;
                 
-                //charCorrect.Text = correct.ToString();
-                //charIncorrect.Text = incorrect.ToString();
             }
             
             e.Handled = true;
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                DialogResult result = MessageBox.Show("Do you really want to exit?", "Warning", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
         private void textAndButtonColour(Button con, char[] c, int next, char key)
         {
@@ -221,9 +249,26 @@ namespace OurProject
                     richTextBox1.SelectionStart = next;
                     richTextBox1.SelectionLength = 1;
                     richTextBox1.SelectionColor = Color.Green;
-                    nextToType(next);
-                    panel2.BackgroundImage = Properties.Resources.happy;
                     correct++;
+                    nextToType(next);
+
+                    if (smilevalue == 1)
+                    {
+                        panel2.BackgroundImage = Properties.Resources.happy;
+                        smilevalue++;
+                    }
+                    else if (smilevalue ==2)
+                    {
+                        panel2.BackgroundImage = Properties.Resources.pinksmile;
+                        smilevalue++;
+                    }
+                    else if (smilevalue == 3)
+                    {
+                        panel2.BackgroundImage = Properties.Resources.masti;
+                        smilevalue = 1;
+                    }
+                    
+                    
                 }
                 else if ((int)key == 13 && (int)c[next] == 10)
                 {
@@ -288,6 +333,7 @@ namespace OurProject
                 grosswpm = (next / 5.0f) / min;
                 netwpm = grosswpm - ((incorrect/5.0f) / min);
                 accuracy = (next - incorrect) / next;
+                accuracy = accuracy * 100;
                 label5.Text = "GrossWPM : " + grosswpm;
                 if (netwpm < 0)
                 {
@@ -298,7 +344,8 @@ namespace OurProject
                     label2.Text = "NetWPM : " + netwpm;
                 }
                 
-                label6.Text = "Accuracy : " + (accuracy * 100);
+                //label6.Text = "Accuracy : " + (accuracy * 100);
+                label6.Text = "Accuracy : " + accuracy ;
                 label1.Text = "Errors : " + incorrect;
 
 
@@ -870,15 +917,16 @@ namespace OurProject
         {
             timer1.Stop();
            // String data = netwpm.ToString() + accuracy.ToString();
-            string pagol = ((double)netwpm).ToString("F1");
-            string sagol = ((double)accuracy).ToString("F1");
-            String cse = Environment.NewLine + DateTime.Now.ToString("M/d/yyyy") + "\t"+ DateTime.Now.ToString("h:mm:ss tt") + "\t"   + pagol + "\t" + sagol;
-            File.AppendAllText("record.txt", cse);
+            //string pagol = ((double)netwpm).ToString("F1");
+            //string sagol = ((double)accuracy).ToString("F1");
+            //String cse = Environment.NewLine + DateTime.Now.ToString("M/d/yyyy") + "\t"+ DateTime.Now.ToString("h:mm:ss tt") + "\t"   + pagol + "\t" + sagol;
+           // File.AppendAllText("record.txt", cse);
+            insertDb();
         }
 
         private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Form2 fr = new Form2();
+            Progress fr = new Progress();
             fr.Show();
             this.Hide();
         }
@@ -904,7 +952,87 @@ namespace OurProject
            richTextBox1.Text = loadText(reuseText);
         }
 
-        
+        private void btn7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void insertDb()
+        {
+            try
+            {
+                //OleDbConnection connection = new OleDbConnection();
+                connection.Open();
+                //Form4 fdv = new Form4();
+                String user = username;
+                OleDbCommand command = new OleDbCommand();
+                command.Connection = connection;
+
+                command.CommandText = "insert into typingInfo (n_name,n_date,n_time,Accuracy,NetWPM) values(' " + username + " ',' " + DateTime.Now.ToString("M/d/yyyy") + " ',' " + DateTime.Now.ToString("h:mm:ss tt") + " ',' " + accuracy + " ',' " + netwpm + " ')";
+                //command.CommandText = "INSERT INTO typingData (id,uname) values('" + textBox6.Text + "','" + textBox1.Text + "')";
+
+                command.ExecuteNonQuery();
+                MessageBox.Show("Data saved");
+                connection.Close();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error : " + ex);
+            }
+        }
+
+        private void btny_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btna_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnk_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn0_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aboutToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            About ab = new About();
+            this.Hide();
+            ab.Show();
+        }
    
     }
 }
